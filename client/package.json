@@ -1,5 +1,5 @@
 {
-  "name": "code_challenge",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cd client && npm install && npm run build && cd ..",
-    "postinstall": "npm run build && echo 'Client built!'",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
