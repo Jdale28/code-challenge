@@ -1,42 +1,57 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
 class Codeliners extends Component {
-    state = {
-        name: '',
-        snippets: []
-    }
-    componentDidMount() {
-        const codelineId = this.props.match.params.id
-        this.fetchCodeline(codelineId)
-    }
+  state = {
+    name: "",
+    snippets: [],
+    shuffledSnippets: []
+  };
+  componentDidMount() {
+    const codelineId = this.props.match.params.id;
+    this.fetchCodeline(codelineId);
+}
 
-    fetchCodeline = async (codelineId) => {
-        try {
-            const codelinesResponse = await axios.get(`/api/codelines/${codelineId}`)
-            await this.setState({
-                name: codelinesResponse.data.name,
-                snippets: codelinesResponse.data.snippets
-            })
-        }
-        catch (error) {
-            console.log(error)
-            await this.setState({ error: error.message })
-        }
-    }
+// Randomize codlines in the map 
 
-    render() {
-        return (
-            <div>
-                <h1>{this.state.name}</h1>
-                {this.state.snippets.map(snippet => (
-                    <div key={snippet.id}>
-                    <h4>{snippet.snippet}</h4>
-                    </div>
-                ))}
-            </div>
-        );
+fetchCodeline = (codelineId) => {
+    axios.get(`/api/codelines/${codelineId}`).then(res => {
+        this.setState({
+            name: res.data.name,
+            snippets: res.data.snippets
+        });
+        this.shuffleSnippets()
+    });
+  };
+
+  // Shuffle snippets into shuffledSnippets
+
+  shuffleSnippets = () => {
+    let input = this.state.snippets
+    console.log(this.state.snippets)
+    for (var i = input.length-1; i > 0; i--) {
+        var randomIndex = Math.floor(Math.random()*(i+1)); 
+        var itemAtIndex = input[randomIndex]; 
+         
+        input[randomIndex] = input[i]; 
+        input[i] = itemAtIndex;
     }
+    // console.log(input)
+    this.setState({ shuffledSnippets: input }) 
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>{this.state.name}</h1>
+        {this.state.snippets.map(snippet => (
+          <div key={snippet.id}>
+            <h4>{snippet.snippets}</h4>
+          </div>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default Codeliners;
