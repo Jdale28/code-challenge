@@ -27,16 +27,14 @@ fetchCodeline = (codelineId) => {
   // Shuffle snippets into shuffledSnippets
 
   shuffleSnippets = () => {
-    let input = this.state.snippets
-    console.log(this.state.snippets)
+    let input = [...this.state.snippets]
     for (var i = input.length-1; i > 0; i--) {
         var randomIndex = Math.floor(Math.random()*(i+1)); 
         var itemAtIndex = input[randomIndex]; 
-         
         input[randomIndex] = input[i]; 
         input[i] = itemAtIndex;
     }
-    // console.log(input)
+    console.log(input)
     this.setState({ shuffledSnippets: input }) 
   }
 
@@ -44,7 +42,7 @@ fetchCodeline = (codelineId) => {
     return (
       <div>
         <h1>{this.state.name}</h1>
-        {this.state.snippets.map(snippet => (
+        {this.state.shuffledSnippets.map(snippet => (
           <div key={snippet.id}>
             <h4>{snippet.snippets}</h4>
           </div>
